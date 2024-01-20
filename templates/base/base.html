@@ -1,0 +1,32 @@
+{% load render_partial %}
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <title>
+        {% block title %}
+
+        {% endblock title %}
+    </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Bootstrap CSS v5.3 -->
+    {% include 'base/header_references.html' %}
+</head>
+
+<body>
+{% render_partial 'ab_borhanifar_backend.views.header' %}
+{% block main %}
+
+{% endblock main %}
+<!-- Footer -->
+{% render_partial 'ab_borhanifar_backend.views.footer' %}
+<!-- Footer -->
+<!-- Bootstrap JavaScript Libraries -->
+{% include 'base/footer_references.html' %}
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    ثبت نام در سایت
+{% endblock title %}
+
+{% block main %}
+    <main class="container my-4 d-flex flex-column align-items-center gap-4">
+        <h2 class="text-center">ثبت نام در سایت</h2>
+        <div class="col-md-7 border p-4 rounded border-success">
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label for="id_username" class="col-sm-2 col-form-label">نام کاربری *</label>
+                    <div class="col-sm-10">
+                        {{ form.username }}
+                    </div>
+                    {% for error in form.username.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+                <div class="row mb-3">
+                    <label for="id_email" class="col-sm-2 col-form-label">ایمیل *</label>
+                    <div class="col-sm-10">
+                        {{ form.email }}
+                    </div>
+                    {% for error in form.email.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="row mb-3">
+                    <label for="id_password1" class="col-sm-2 col-form-label">رمز عبور *</label>
+                    <div class="col-sm-10">
+                        {{ form.password1 }}
+                    </div>
+                    {% for error in form.password1.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="row mb-3">
+                    <label for="id_password2" class="col-sm-2 col-form-label">تکرار رمز عبور *</label>
+                    <div class="col-sm-10">
+                        {{ form.password2 }}
+                    </div>
+                    {% for error in form.password2.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-success px-4">ثبت نام</button>
+            </form>
+        </div>
+
+    </main>
+{% endblock main %}

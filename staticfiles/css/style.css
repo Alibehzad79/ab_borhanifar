@@ -1,0 +1,20 @@
+* {
+    font-family: Vazirmatn, sans-serif;
+}
+
+.nav-link {
+    border-radius: 10px;
+}
+
+.nav-link:hover {
+    background-color: green;
+    color: white !important;
+    border-radius: 10px;
+    transition: all ease 0.3s;
+}
+
+.active-btn {
+    background-color: green;
+    color: white !important;
+    border-radius: 10px;
+}

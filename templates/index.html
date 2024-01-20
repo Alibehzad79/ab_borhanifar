@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    عبدالله برهانی فر
+{% endblock title %}
+
+{% block main %}
+    <main class="container my-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% if products %}
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="{{ product.image.url }}" width="400" height="400" title="{{ product.title }}"
+                                 class="card-img-top"
+                                 alt="{{ product.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                                <p class="card-text">{{ product.description|truncatechars:200 }}</p>
+                            </div>
+                            <div class="card-footer d-flex flex-column flex-md-row justify-content-around align-items-center">
+                                <h5>قیمت: {{ product.price }} تومان</h5>
+                                <a href="{% url 'add_order' product.id %}" class="btn btn-success">افزودن به سبد
+                                    خرید</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <p class="alert alert-danger">محصولی برای نمایش وجود ندارد.</p>
+            {% endif %}
+        </div>
+
+    </main>
+{% endblock main %}

@@ -1,0 +1,42 @@
+<header>
+    <!-- place navbar here -->
+    <div class="container-fluid">
+        <div class="container">
+            <!-- Nav tabs -->
+            <nav class="navbar navbar-expand-lg bg-light p-5 gap-3">
+                <a class="navbar-brand" href="/">عبدالله برهانی فر</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-5 gap-md-0 w-100">
+                        <div class="navbar-nav gap-2">
+                            <a class="nav-link active-btn border px-4" aria-current="page" href="{% url 'home_page' %}">خانه</a>
+                            <a class="nav-link border px-4" href="./question.html">درخواست حل مسئله</a>
+                        </div>
+                        <div class="d-flex flex-column gap-1 flex-md-row mx-4">
+                            {% if not request.user.is_authenticated %}
+                                <a href="{% url 'login' %}" class="btn btn-outline-primary">ورود </a>
+                                <a href="{% url 'register' %}" class="btn btn-success">ثبت نام</a>
+                            {% else %}
+                                <a href="./dashboard.html" class="btn btn-primary">پروفایل کاربری</a>
+                                <a href="{% url 'orders' %}"
+                                   class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center">سبد
+                                    خرید <i class="ri-shopping-basket-line mx-1">
+                                    </i><span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ orders_count }}
+                                </span>
+                                    <span class="visually-hidden"></span></a>
+                                <a href="{% url 'logout' %}" class="btn btn-outline-danger mx-3">خروج </a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>

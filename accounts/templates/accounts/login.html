@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    ورود به سایت
+{% endblock title %}
+
+{% block main %}
+    <main class="container my-4 d-flex flex-column align-items-center gap-4">
+        <h2 class="text-center">ورود به سایت</h2>
+        <div class="col-md-7 border p-4 rounded border-primary">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label for="id_email" class="col-sm-2 col-form-label">ایمیل</label>
+                    <div class="col-sm-10">
+                        {{ form.email }}
+                    </div>
+                    {% for error in form.email.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+                <div class="row mb-3">
+                    <label for="id_password" class="col-sm-2 col-form-label">رمز عبور</label>
+                    <div class="col-sm-10">
+                        {{ form.password }}
+                    </div>
+                    {% for error in form.password.errors %}
+                        <p class="alert alert-danger my-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <fieldset class="row mb-3">
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            {{ form.remember_me }}
+                            <label class="form-check-label" for="id_remember_me">
+                                مرا به خاطر بسپار
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-primary px-4">ورود</button>
+            </form>
+        </div>
+
+    </main>
+{% endblock main %}

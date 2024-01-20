@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    سبد خرید
+{% endblock title %}
+
+{% block main %}
+    {% if request.user.is_authenticated %}
+        <main class="container my-5 d-flex flex-column gap-4 col-md-6">
+            <h2>سبد خرید <i class="ri-shopping-basket-fill"></i></h2>
+            {% if orders %}
+                <div class="flex flex-column">
+                    {% for order in orders %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-2">
+                                    <a href="#">
+                                        <img src="{{ order.product.image.url }}"
+                                             class="img-fluid rounded-start d-none d-md-block"
+                                             style="width: 100%; height: 100%;" alt="{{ order.product.title }}"
+                                             title="{{ order.product.title }}">
+                                    </a>
+                                </div>
+                                <div class="col col-md-10 d-flex flex-column justify-content-around">
+                                    <div class="card-body gap-1 d-flex flex-column">
+                                        <a href="#" class="h5 text-decoration-none text-primary">
+                                            <h5 class="card-title">{{ order.product.title }}</h5>
+                                        </a>
+                                        <p class="card-text">{{ order.product.description|truncatechars:200 }}</p>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-around">
+                                        <span>قیمت: {{ order.price }} تومان</span>
+                                        <a href="{% url 'remove_order' order.id %}" class="btn btn-danger">حذف</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <p class="btn btn-success mt-4 d-block p-4">هزینه کل: {{ amount }} هزار تومان</p>
+                    <a href="#" class="btn btn-primary mt-2">پرداخت و نهایی کردن سفارش</a>
+                </div>
+            {% else %}
+                <p class="alert alert-danger">محصولی در سبد خرید وجود ندارد.</p>
+            {% endif %}
+        </main>
+    {% else %}
+        <a href="{% url 'login' %}">ورود</a>
+    {% endif %}
+{% endblock main %}
