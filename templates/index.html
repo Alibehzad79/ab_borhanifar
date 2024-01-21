@@ -1,11 +1,28 @@
 {% extends 'base/base.html' %}
 
+{% block seo %}
+    {% if seo %}
+        <meta name="description" content="{{ seo.descriptions }}">
+        <meta name="keywords" content="{{ seo.keywords }}">
+    {% endif %}
+    {% if settings %}
+        <meta name="author" content="{{ settings.owner_name }}">
+        <link rel="icon" type="image/x-icon" href="{{ settings.site_logo.url }}">
+    {% endif %}
+{% endblock %}
+
 {% block title %}
     عبدالله برهانی فر
 {% endblock title %}
 
 {% block main %}
     <main class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-success"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+            {% endfor %}
+
+        {% endif %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% if products %}
                 {% for product in products %}

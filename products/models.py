@@ -17,3 +17,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = _("محصول")
         verbose_name_plural = _("محصولات")
+        ordering = [
+            '-id'
+        ]

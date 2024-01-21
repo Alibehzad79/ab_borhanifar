@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% block title %}
+    دانلود های من
+{% endblock title %}
 
-</body>
-</html>
+{% block main %}
+    <main class="container my-5 d-flex flex-column gap-4 col-md-6">
+        <h2>دانلود ها <i class="ri-download-fill"></i></h2>
+        <div class="flex flex-column">
+            {% if downloads %}
+                {% for download in downloads %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <a href="#">
+                                    <img src="{{ download.product.image.url }}"
+                                         class="img-fluid rounded-start d-none d-md-block"
+                                         style="width: 100%; height: 100%;" alt="...">
+                                </a>
+                            </div>
+                            <div class="col col-md-10 d-flex flex-column justify-content-around">
+                                <div class="card-body gap-1 d-flex flex-column">
+                                    <a href="#" class="h5 text-decoration-none text-primary">
+                                        <h5 class="card-title">{{ download.product.title }}</h5>
+                                    </a>
+                                    <p class="card-text">{{ download.product.description|truncatechars:200 }}</p>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-around">
+                                    <a href="{{ download.product.file.url }}" download class="btn btn-success w-100">دانلود</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <p class="alert alert-danger">دانلودی یافت نشد.</p>
+            {% endif %}
+        </div>
+    </main>
+{% endblock main %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, get_user_model
-from accounts.forms import LoginForm, RegisterForm
+from django.contrib.auth.decorators import login_required
+from accounts.forms import LoginForm, RegisterForm, ProfileForm, ChangePasswordForm
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 
@@ -65,3 +66,92 @@ def register_page(request):
 def logout_page(request):
     logout(request)
     return redirect("login")
+
+
+@login_required(login_url="login")
+def sidebar(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    template_name = "accounts/sidebar.html"
+    context = {
+
+    }
+    return render(request, template_name, context)
+
+
+@login_required(login_url="login")
+def profile(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    template_name = "accounts/profile.html"
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST or None)
+        if form.is_valid():
+            user = request.user
+            first_name = form.cleaned_data.get("first_name")
+            last_name = form.cleaned_data.get("last_name")
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            messages.add_message(request, message="با موفقیت تغییر یافت.", level=messages.SUCCESS)
+            return redirect("profile")
+    else:
+        form = ProfileForm(initial={"first_name": request.user.first_name, "last_name": request.user.last_name})
+
+    context = {
+        "user": request.user,
+        'form': form,
+    }
+    return render(request, template_name, context)
+
+
+@login_required(login_url="login")
+def change_password(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    template_name = "accounts/change_password.html"
+    if request.method == "POST":
+        form = ChangePasswordForm(request.POST or None)
+        if form.is_valid():
+            password1 = form.cleaned_data.get("password1")
+            user = request.user
+            user.set_password(password1)
+            user.save()
+            messages.add_message(request, message="رمز عبور با موفقیت تغییر یافت", level=messages.SUCCESS)
+            return redirect("change_password")
+    else:
+        form = ChangePasswordForm()
+
+    context = {"form": form, }
+    return render(request, template_name, context)
+
+
+@login_required(login_url="login")
+def user_downloads(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    template_name = 'accounts/downloads.html'
+    user = request.user
+    user_downloads = user.com_orders.all()
+
+    context = {
+        'downloads': user_downloads,
+    }
+    return render(request, template_name, context)
+
+
+@login_required(login_url="login")
+def user_questions(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    template_name = "accounts/user_questions.html"
+    user = request.user
+    questions = user.questions.all()
+
+    context = {
+        "questions": questions,
+    }
+    return render(request, template_name, context)

@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load humanize %}
+{% block title %}
+    درخواست حل مسئله
+{% endblock title %}
+
+{% block main %}
+    <main class="container my-5 d-flex flex-column gap-4 col-md-6">
+        <h2 class="text-center">درخواست سوال</h2>
+        <p class="border border-success p-4 rounded text-center">هزینه حل هر سوال: <span
+                class="text-danger">{{ question_price|intcomma:False }} تومان </span>
+            می
+            باشد.</p>
+        <p class="border border-danger p-4 rounded text-center">جواب سوالات به ایمیل وارد شده فرستاده می شود.</p>
+        {% if not request.user.is_authenticated %}
+            <p class="alert alert-danger">برای درخواست حل مسئله، لطفا وارد اکانتتون بشوید. <a href="{% url "login" %}"
+                                                                                              class="mx-3 btn btn-primary">ورود</a>
+            </p>
+        {% else %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.level == 25 %}
+                        <p class="alert alert-success">{{ message }}</p>
+                    {% else %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+            <form class="border border-primary p-5 rounded d-flex flex-column gap-4" method="post"
+                  action="{% url 'question' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">نام و نام خانوادگی</label>
+                    {{ form.name }}
+                </div>
+                {% for error in form.name.errors %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">ایمیل</label>
+                    {{ form.email }}
+                </div>
+                {% for error in form.email.errors %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+                <div class="input-group">
+                    <label class="input-group-text" for="id_title">موضوع سوال</label>
+                    {{ form.title }}
+
+                </div>
+                {{ form.title.help_text }}
+                {% for error in form.title.errors %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+                <div class="input-group">
+                    <label class="input-group-text" for="id_count">تعداد سوال</label>
+                    {{ form.count }}
+
+                </div>
+                {{ form.count.help_text }}
+                {% for error in form.count.errors %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+                <div class="input-group mb-3">
+                    {{ form.image }}
+                    <label class="input-group-text" for="id_image">انتخاب تصویر</label>
+                </div>
+                {% for error in form.image.errors %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+                {#                {{ form.as_p }}#}
+                <button type="submit" class="btn btn-outline-success col col-md-3">ارسال و پرداخت هزینه</button>
+            </form>
+        {% endif %}
+    </main>
+{% endblock main %}

@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static, settings
-from ab_borhanifar_backend.views import home_page
+from ab_borhanifar_backend.views import home_page, about_me
 
 urlpatterns = [
     path('', home_page, name='home_page'),
+    path('about-me/', about_me, name='about-me'),
     path('accounts/', include('accounts.urls')),
     path('orders/', include('orders.urls')),
+    path('question/', include('questions.urls')),
     path('admin/', admin.site.urls),
 ]
 

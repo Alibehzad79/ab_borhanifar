@@ -7,6 +7,11 @@
     {% if request.user.is_authenticated %}
         <main class="container my-5 d-flex flex-column gap-4 col-md-6">
             <h2>سبد خرید <i class="ri-shopping-basket-fill"></i></h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="alert alert-danger"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
             {% if orders %}
                 <div class="flex flex-column">
                     {% for order in orders %}

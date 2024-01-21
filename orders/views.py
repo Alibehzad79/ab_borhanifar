@@ -1,7 +1,7 @@
-import datetime
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.contrib import messages
 from orders.models import Order
 from products.models import Product
 
@@ -20,9 +20,10 @@ def add_order(request, **kwargs):
         return redirect("home_page")
 
     new_order = Order.objects.create(user=user, product=product, price=product.price,
-                                     date_created=datetime.datetime.now())
+                                     date_created=timezone.now())
     if new_order is not None:
         new_order.save()
+        messages.add_message(request, message="با موفقت به سبد خرید اضافه شد.", level=messages.SUCCESS)
         return redirect("home_page")
 
 
@@ -50,4 +51,5 @@ def remove_order(request, **kwargs):
     user = request.user
     order = user.orders.get(id=order_id)
     Order.delete(order)
+    messages.add_message(request, message="با موفقت حذف شد.", level=messages.ERROR)
     return redirect('orders')
