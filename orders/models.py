@@ -17,9 +17,8 @@ class Order(models.Model):
 
     def get_amount(self):
         amount = 0
-        for order in self.objects.all():
+        for order in self.objects.filter(is_pay=False).all():
             amount += order.price
-
         return amount
 
     def __str__(self):

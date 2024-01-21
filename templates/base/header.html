@@ -18,18 +18,18 @@
                             {% endif %}  border px-4" aria-current="page" href="{% url 'home_page' %}">خانه</a>
                             <a class="nav-link {% if request.path == "/question/" %}
                             	active-btn
-                            {% endif %}  border px-4" href="{% url 'question' %}">درخواست حل مسئله</a>
+                            {% endif %}  border px-4" href="{% url 'question_app:question' %}">درخواست حل مسئله</a>
                             <a class="nav-link {% if request.path == "/about-me/" %}
                             	active-btn
                             {% endif %}  border px-4" href="{% url 'about-me' %}">درباره من</a>
                         </div>
-                        <div class="d-flex flex-column gap-1 flex-md-row mx-4">
+                        <div class="d-flex flex-column gap-3 flex-md-row mx-4">
                             {% if not request.user.is_authenticated %}
                                 <a href="{% url 'login' %}" class="btn btn-outline-primary">ورود </a>
                                 <a href="{% url 'register' %}" class="btn btn-success">ثبت نام</a>
                             {% else %}
                                 <a href="{% url 'profile' %}" class="btn btn-primary">پروفایل کاربری</a>
-                                <a href="{% url 'orders' %}"
+                                <a href="{% url 'order:orders' %}"
                                    class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center">سبد
                                     خرید <i class="ri-shopping-basket-line mx-1">
                                     </i><span
@@ -37,7 +37,16 @@
                                         {{ orders_count }}
                                 </span>
                                     <span class="visually-hidden"></span></a>
+                                <a href="{% url 'user_questions' %}"
+                                   class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center">سبد
+                                    سوالات <i class="ri-shopping-basket-line mx-1">
+                                    </i><span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ user_question_count }}
+                                </span>
+                                    <span class="visually-hidden"></span></a>
                                 <a href="{% url 'logout' %}" class="btn btn-outline-danger mx-3">خروج </a>
+
                             {% endif %}
 
                         </div>

@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-around">
                                         <span>قیمت: {{ order.price }} تومان</span>
-                                        <a href="{% url 'remove_order' order.id %}" class="btn btn-danger">حذف</a>
+                                        <a href="{% url 'order:remove_order' order.id %}" class="btn btn-danger">حذف</a>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                     {% endfor %}
 
                     <p class="btn btn-success mt-4 d-block p-4">هزینه کل: {{ amount }} هزار تومان</p>
-                    <a href="#" class="btn btn-primary mt-2">پرداخت و نهایی کردن سفارش</a>
+                    <a href="{% url 'order:go-to-gateway-view' %}" class="btn btn-primary mt-2">پرداخت و نهایی کردن سفارش</a>
                 </div>
             {% else %}
                 <p class="alert alert-danger">محصولی در سبد خرید وجود ندارد.</p>

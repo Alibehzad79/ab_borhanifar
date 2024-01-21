@@ -28,7 +28,7 @@
 
             {% endif %}
             <form class="border border-primary p-5 rounded d-flex flex-column gap-4" method="post"
-                  action="{% url 'question' %}" enctype="multipart/form-data">
+                  action="{% url 'question_app:question' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="id_name" class="form-label">نام و نام خانوادگی</label>

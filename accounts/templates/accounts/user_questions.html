@@ -1,31 +1,49 @@
 {% extends 'base/base.html' %}
 {% load humanize %}
+{% load render_partial %}
 {% block title %}
-    سوالات من
+    سبد سوال
 {% endblock title %}
 
 {% block main %}
     <main class="container my-5 d-flex flex-column gap-4 col-md-6">
-        <h2>سوالات من <i class="ri-book-fill"></i></h2>
-        <div class="flex flex-column">
+        <h2>سبد سوال <i class="ri-book-fill"></i></h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-success">{{ message }}</p>
+            {% endfor %}
+
+        {% endif %}
+        <div class="d-flex flex-column flex-md-row gap-2">
+            {% render_partial 'accounts.views.question_sidebar' %}
             {% if questions %}
-                <ol class="list-group">
-                    {% for question in questions %}
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">سوال {{ question.short_id }}</div>
-                                تاریخ: {{ question.date_sent|naturalday }}
-                            </div>
-                            {% if question.is_done == True %}
-                                <span class="badge bg-success rounded-pill">جواب داده شده</span>
-                            {% else %}
-                                <span class="badge bg-warning rounded-pill">در انتظار بررسی</span>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ol>
+                <div class="d-flex flex-column gap-5">
+                    <ol class="list-group col col-md-8 w-100">
+                        {% for question in questions %}
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto d-flex flex-column gap-3">
+                                    <div class="fw-bold">سوال {{ question.short_id }}</div>
+                                    <div>
+                                        تاریخ: {{ question.date_sent|naturalday }}
+                                    </div>
+                                    <div class="fw-bold">موضوع سوال: {{ question.question_title }}</div>
+                                    <div class="">تعداد: {{ question.question_count }}</div>
+                                    <div class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</div>
+                                </div>
+                                {% if question.is_pay == True %}
+                                    <span class="badge bg-success rounded-pill mx-1">پرداخت شده</span>
+                                {% else %}
+                                    <span class="badge bg-warning rounded-pill mx-1">در انتظار پرداخت</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ol>
+                    <p class="btn btn-secondary">هزینه کل: {{ amount|intcomma:False }} تومان</p>
+                    <a href="{% url 'question_app:go-to-gateway-view' %}"
+                       class="btn btn-primary col col-md-6">پرداخت</a>
+                </div>
             {% else %}
-                <p class="alert alert-danger">سوالی یافت نشد.</p>
+                <p class="alert alert-danger w-50 text-center align-self-center">سبد سوال خالی است.</p>
             {% endif %}
         </div>
     </main>

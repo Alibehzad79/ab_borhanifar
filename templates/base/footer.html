@@ -27,7 +27,7 @@
                         </h6>
                         {% for product in products %}
                             <p>
-                                <a href="{% url 'add_order' product.id %}"
+                                <a href="{% url 'order:add_order' product.id %}"
                                    class="text-reset text-decoration-none">{{ product.title }} <i
                                         class="ri-add-line bg-primary rounded text-white mx-1"></i></a>
                             </p>
@@ -47,7 +47,7 @@
                         <a href="{% url 'home_page' %}" class="text-reset">خانه</a>
                     </p>
                     <p>
-                        <a href="{% url 'question' %}" class="text-reset">پرسیدن سوال</a>
+                        <a href="{% url 'question_app:question' %}" class="text-reset">پرسیدن سوال</a>
                     </p>
                 </div>
                 <!-- Grid column -->

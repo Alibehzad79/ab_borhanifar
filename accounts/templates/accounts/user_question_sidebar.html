@@ -1,0 +1,12 @@
+<div class="col col-md-3">
+    <ul class="nav flex-column gap-2">
+        <li class="nav-item">
+            <a class="nav-link text-black {% if request.path == '/accounts/questions/' %}active-btn{% endif %} p-3" aria-current="page" href="{% url 'user_questions' %}">سبد سوالات
+                اطلاعات</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-black {% if request.path == '/accounts/questions-complete/' %}active-btn{% endif %} p-3" aria-current="page" href="{% url 'questions-complete' %}">سوالات پرداخت شده</a>
+        </li>
+
+    </ul>
+</div>

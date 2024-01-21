@@ -19,12 +19,15 @@ from django.urls import path, include
 from django.conf.urls.static import static, settings
 from ab_borhanifar_backend.views import home_page, about_me
 
+from azbankgateways.urls import az_bank_gateways_urls
+
 urlpatterns = [
     path('', home_page, name='home_page'),
     path('about-me/', about_me, name='about-me'),
     path('accounts/', include('accounts.urls')),
     path('orders/', include('orders.urls')),
     path('question/', include('questions.urls')),
+    path('bankgateways/', az_bank_gateways_urls()),
     path('admin/', admin.site.urls),
 ]
 

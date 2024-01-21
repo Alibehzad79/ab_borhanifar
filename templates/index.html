@@ -19,7 +19,11 @@
     <main class="container my-4">
         {% if messages %}
             {% for message in messages %}
-                <p class="alert alert-success"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+               {% if message.level == 25 %}
+               	 <p class="alert alert-success"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+               {% else %}
+                   <p class="alert alert-danger"><i class="ri-close-circle-fill"></i>{{ message }}</p>
+               {% endif %}
             {% endfor %}
 
         {% endif %}
@@ -37,7 +41,7 @@
                             </div>
                             <div class="card-footer d-flex flex-column flex-md-row justify-content-around align-items-center">
                                 <h5>قیمت: {{ product.price }} تومان</h5>
-                                <a href="{% url 'add_order' product.id %}" class="btn btn-success">افزودن به سبد
+                                <a href="{% url 'order:add_order' product.id %}" class="btn btn-success">افزودن به سبد
                                     خرید</a>
                             </div>
                         </div>

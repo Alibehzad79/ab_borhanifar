@@ -22,10 +22,13 @@ def header(request):
     template_name = "base/header.html"
     if request.user.is_authenticated:
         order_count = request.user.orders.filter(is_pay=False).count()
+        user_question_count = request.user.questions.filter(is_pay=False).count()
     else:
         order_count = 0
+        user_question_count = 0
     context = {
         "orders_count": order_count,
+        'user_question_count': user_question_count,
     }
     return render(request, template_name, context)
 

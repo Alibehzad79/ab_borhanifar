@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # packages
     'django_render_partial',
     'ckeditor',
+    'azbankgateways',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+    'GATEWAYS': {
+        'ZARINPAL': {
+            'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+            'SANDBOX': 1,  # 0 disable, 1 active
+        },
+    },
+    'DEFAULT': 'ZARINPAL',
+    'BANK_PRIORITIES': [],
+    'IS_SAFE_GET_GATEWAY_PAYMENT': False,
+}
 
 CKEDITOR_CONFIGS = {
     'default': {

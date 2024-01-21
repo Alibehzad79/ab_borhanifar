@@ -6,6 +6,12 @@
 {% block main %}
     <main class="container my-5 d-flex flex-column gap-4 col-md-6">
         <h2>دانلود ها <i class="ri-download-fill"></i></h2>
+        {% if messages %}
+        	{% for message in messages %}
+        		<p class="alert alert-success"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+        	{% endfor %}
+
+        {% endif %}
         <div class="flex flex-column">
             {% if downloads %}
                 {% for download in downloads %}

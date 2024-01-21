@@ -1,6 +1,6 @@
 from django.urls import path
 from accounts.views import login_page, logout_page, register_page, profile, change_password, user_downloads, \
-    user_questions
+    user_questions, user_questions_complete
 
 urlpatterns = [
     path('login/', login_page, name="login"),
@@ -11,4 +11,5 @@ urlpatterns = [
     path("downloads/", user_downloads, name="downloads"),
     path("downloads/", user_downloads, name="downloads"),
     path("questions/", user_questions, name="user_questions"),
+    path("questions-complete/", user_questions_complete, name="questions-complete"),
 ]
