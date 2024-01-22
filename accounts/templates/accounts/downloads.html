@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load humanize %}
 {% block title %}
     دانلود های من
 {% endblock title %}
@@ -30,6 +31,10 @@
                                         <h5 class="card-title">{{ download.product.title }}</h5>
                                     </a>
                                     <p class="card-text">{{ download.product.description|truncatechars:200 }}</p>
+                                </div>
+                                <div class="card-footer d-flex flex-row flex-wrap justify-content-between">
+                                    <p class="text">تاریخ خرید: {{ download.date_created|naturalday }}</p>
+                                    <p class="text">قیمت محصول: {{ download.price|intcomma:False }} تومان</p>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-around">
                                     <a href="{{ download.product.file.url }}" download class="btn btn-success w-100">دانلود</a>

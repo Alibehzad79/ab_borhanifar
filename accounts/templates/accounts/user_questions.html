@@ -10,7 +10,11 @@
         <h2>سبد سوال <i class="ri-book-fill"></i></h2>
         {% if messages %}
             {% for message in messages %}
-                <p class="alert alert-success">{{ message }}</p>
+                {% if message.level == 25 %}
+                    <p class="alert alert-success"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+                {% else %}
+                    <p class="alert alert-danger"><i class="ri-checkbox-circle-fill fs-5 mx-1"></i>{{ message }}</p>
+                {% endif %}
             {% endfor %}
 
         {% endif %}
@@ -28,7 +32,11 @@
                                     </div>
                                     <div class="fw-bold">موضوع سوال: {{ question.question_title }}</div>
                                     <div class="">تعداد: {{ question.question_count }}</div>
-                                    <div class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</div>
+                                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                                        <p class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</p>
+                                        <a href="{% url 'question_app:delete_question' question.id %}"
+                                           class="btn btn-danger">حذف</a>
+                                    </div>
                                 </div>
                                 {% if question.is_pay == True %}
                                     <span class="badge bg-success rounded-pill mx-1">پرداخت شده</span>

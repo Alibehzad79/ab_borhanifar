@@ -2,16 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-
-from accounts.forms import LoginForm, RegisterForm, ProfileForm, ChangePasswordForm
-from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from accounts.forms import LoginForm, RegisterForm, ProfileForm, ChangePasswordForm, RecoveryPasswordForm
+from django.contrib.auth.hashers import make_password, get_random_string
 from django.contrib import messages
-
+from ab_borhanifar_backend.settings import DEFAULT_FROM_EMAIL
 from azbankgateways.exceptions import AZBankGatewaysException
 from django.urls import reverse
 from azbankgateways import bankfactories, models as bank_models, default_settings as settings
 
-from questions.models import QuestionComplete
+from questions.models import QuestionComplete, Question
+from site_settings.models import SiteSetting
 
 
 # Create your views here.
@@ -28,12 +29,12 @@ def login_page(request):
             remember_me = form.cleaned_data.get("remember_me")
             username = get_user_model().objects.get(email=email).username
             get_user = get_user_model().objects.get(username=username)
-            print(get_user.username, get_user.password)
             user = authenticate(request, username=get_user.username, password=password)
             if user is not None:
                 login(request, user)
                 if not remember_me:
                     request.session.set_expiry(0)
+                messages.add_message(request, message="با موفقیت وارد شدید", level=messages.SUCCESS)
                 return redirect('home_page')
             else:
                 form.add_error('password', "ایمیل یا رمز عبور اشتباه است.")
@@ -59,6 +60,7 @@ def register_page(request):
             new_user = get_user_model().objects.create(username=username, email=email, password=password_encrypt)
             if new_user is not None:
                 new_user.save()
+                messages.add_message(request, message="با موفقیت ثبت نام شدید.", level=messages.SUCCESS)
                 return redirect("login")
             else:
                 form.add_error('password2', 'کاربری قبلا با مشخصات وارد شده، ثبت نام کرده است.')
@@ -146,6 +148,73 @@ def change_password(request):
         form = ChangePasswordForm()
 
     context = {"form": form, }
+    return render(request, template_name, context)
+
+
+def recovery_password(request):
+    template_name = 'accounts/recovery_password.html'
+    if request.user.is_authenticated:
+        return redirect("home_page")
+    if request.method == "POST":
+        form = RecoveryPasswordForm(request.POST or None)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            user = get_user_model().objects.get(email=email)
+            rec_hash = get_random_string(32)
+            user.user_password_rest_token = rec_hash
+            user.save()
+            site_settings = SiteSetting.objects.last()
+            a_href = f'<a href="{site_settings.site_url}accounts/recovery-password/set-password/?key={rec_hash}' + '</a>'
+            send_mail(subject="بازیابی رمز عبور", message=f"{a_href}برای یازیابی رمز عبور، کلیک کنید \n ",
+                      from_email=DEFAULT_FROM_EMAIL, recipient_list=[email], fail_silently=False)
+            return redirect("send_email_done")
+    else:
+        form = RecoveryPasswordForm()
+    context = {
+        "form": form,
+    }
+    return render(request, template_name, context)
+
+
+def send_email_done(request):
+    template_name = 'accounts/send_email_done.html'
+    context = {}
+    return render(request, template_name, context)
+
+
+def set_recovery_password(request, **kwargs):
+    template_name = "accounts/set_recovery_password.html"
+    rec_hash = request.GET.get("key")
+    print(rec_hash)
+    try:
+        user = get_user_model().objects.get(user_password_rest_token=rec_hash)
+        print(user)
+    except:
+        user = None
+    if user is None:
+        messages.add_message(request, message="توکن نامعتبر است", level=messages.ERROR)
+        return redirect("home_page")
+
+    if rec_hash != user.user_password_rest_token:
+        messages.add_message(request, message="توکن نامعتبر است", level=messages.ERROR)
+        return redirect("home_page")
+
+    if request.method == "POST":
+        form = ChangePasswordForm(request.POST or None)
+        if form.is_valid():
+            password = form.cleaned_data.get("password1")
+            user.set_password(password)
+            user.user_password_rest_token = None
+            user.save()
+            messages.add_message(request, message="رمز عبور با موفقیت تغییر یافت", level=messages.SUCCESS)
+            return redirect("login")
+    else:
+        form = ChangePasswordForm()
+
+    context = {
+        'form': form,
+        'rec_hash': rec_hash,
+    }
     return render(request, template_name, context)
 
 
@@ -244,6 +313,19 @@ def user_questions(request):
         'amount': amount,
     }
     return render(request, template_name, context)
+
+
+@login_required(login_url="login")
+def delete_question(request, **kwargs):
+    question_id = kwargs["pk"]
+    user = request.user
+    try:
+        question = Question.objects.get(id=question_id, is_pay=False)
+        question.delete()
+        messages.add_message(request, message="با موفقیت حذف شد.", level=messages.ERROR)
+        return redirect('user_questions')
+    except:
+        return redirect("home_page")
 
 
 @login_required(login_url="login")

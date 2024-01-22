@@ -70,3 +70,14 @@ class ChangePasswordForm(forms.Form):
         if password1 != password2:
             raise forms.ValidationError("رمز عبور ها یکسان نیستند.")
         return password1
+
+
+class RecoveryPasswordForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        exist_email = get_user_model().objects.filter(email=email).exists()
+        if not exist_email:
+            raise forms.ValidationError("کاربری با این ایمیل یافت نشد.")
+        return email

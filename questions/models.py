@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.mail import send_mail
+
+from ab_borhanifar_backend import settings
 
 
 # Create your models here.
@@ -42,7 +45,7 @@ class QuestionComplete(models.Model):
     is_answered = models.BooleanField(default=False, verbose_name=_("جواب داده شده/ نشده"))
 
     def __str__(self):
-        return self.question.name
+        return self.question_title
 
     class Meta:
         verbose_name = _("سوال")
@@ -53,8 +56,9 @@ class QuestionComplete(models.Model):
 
     def save(self, *args, **kwargs):
         if self.is_answered == True:
-            pass
-            # TODO send email
+            send_mail(subject="به سوال شما پاسخ داده شد.",
+                      message="برای مشاهده جواب، به بخش پروفایل کاربری، قسمت سوالات من مراجعه کنید",
+                      from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[self.email], fail_silently=False)
         super(QuestionComplete, self).save(*args, **kwargs)
 
 
@@ -63,7 +67,7 @@ class Answer(models.Model):
     image = models.ImageField(upload_to="images/questions/", verbose_name=_("جواب سوال"), blank=True, null=True)
 
     def __str__(self):
-        return self.question.name
+        return self.question.question_title
 
     class Meta:
         verbose_name = _("جواب سول")

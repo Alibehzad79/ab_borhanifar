@@ -6,6 +6,16 @@
 {% block main %}
     <main class="container my-4 d-flex flex-column align-items-center gap-4">
         <h2 class="text-center">ورود به سایت</h2>
+        {% if messages %}
+        	{% for message in messages %}
+        		{% if message.level == 25 %}
+        			<p class="alert alert-success w-100">{{ message }}</p>
+                    {% else %}
+                    <p class="alert alert-danger w-100">{{ message }}</p>
+        		{% endif %}
+        	{% endfor %}
+
+        {% endif %}
         <div class="col-md-7 border p-4 rounded border-primary">
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
@@ -28,8 +38,8 @@
                         <p class="alert alert-danger my-1">{{ error }}</p>
                     {% endfor %}
                 </div>
-                <fieldset class="row mb-3">
-                    <div class="col-sm-10">
+                <fieldset class="row mb-3 d-flex flex-row justify-content-between gap-3">
+                    <div class="col-sm-6">
                         <div class="form-check">
                             {{ form.remember_me }}
                             <label class="form-check-label" for="id_remember_me">
@@ -37,8 +47,11 @@
                             </label>
                         </div>
                     </div>
+                    <div class="col-sm-6">
+                        <a href="{% url 'recover_password' %}" class="text-decoration-none">فراموشی رمز عبور</a>
+                    </div>
                 </fieldset>
-                <button type="submit" class="btn btn-primary px-4">ورود</button>
+                <button type="submit" class="btn btn-primary px-4 w-100">ورود</button>
             </form>
         </div>
 

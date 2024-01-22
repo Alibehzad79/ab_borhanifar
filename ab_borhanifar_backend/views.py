@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from products.models import Product
+from questions.models import QuestionComplete
 from site_settings.models import SiteSetting, Seo, AboutMe
 
 
@@ -21,14 +22,22 @@ def home_page(request):
 def header(request):
     template_name = "base/header.html"
     if request.user.is_authenticated:
+        if request.user.is_superuser:
+            questions = QuestionComplete.objects.filter(is_answered=False).count()
+        else:
+            questions = 0
         order_count = request.user.orders.filter(is_pay=False).count()
         user_question_count = request.user.questions.filter(is_pay=False).count()
     else:
         order_count = 0
         user_question_count = 0
+        questions = 0
+    admin_path = "/admin/questions/questioncomplete/?is_answered__exact=0"
     context = {
         "orders_count": order_count,
         'user_question_count': user_question_count,
+        "questions": questions,
+        "admin_path": admin_path,
     }
     return render(request, template_name, context)
 

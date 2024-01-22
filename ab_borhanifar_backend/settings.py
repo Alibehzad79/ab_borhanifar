@@ -130,8 +130,19 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = 'from@example.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.c1.liara.email'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'YOUR_USERNAME'
+# EMAIL_HOST_PASSWORD = 'YOUR_PASSWORD'
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'from@example.com'
 
 AZ_IRANIAN_BANK_GATEWAYS = {
     'GATEWAYS': {

@@ -29,6 +29,16 @@
                                 <a href="{% url 'register' %}" class="btn btn-success">ثبت نام</a>
                             {% else %}
                                 <a href="{% url 'profile' %}" class="btn btn-primary">پروفایل کاربری</a>
+                                {% if request.user.is_superuser %}
+                                    <a href="{{ admin_path }}"
+                                       class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center"><i
+                                            class="ri-chat-1-line mx-1">
+                                    </i><span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ questions }}
+                                </span>
+                                        <span class="visually-hidden"></span></a>
+                                {% endif %}
                                 <a href="{% url 'order:orders' %}"
                                    class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center">سبد
                                     خرید <i class="ri-shopping-basket-line mx-1">

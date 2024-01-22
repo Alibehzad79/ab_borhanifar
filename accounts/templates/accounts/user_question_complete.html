@@ -8,35 +8,49 @@
 {% block main %}
     <main class="container my-5 d-flex flex-column gap-4 col-md-6">
         <h2>سبد سوال <i class="ri-book-fill"></i></h2>
-            {% if messages %}
-                {% for message in messages %}
-                    <p class="alert alert-success">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-            <div class="d-flex flex-column flex-md-row gap-2">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-success">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <div class="d-flex flex-column flex-md-row gap-2">
             {% render_partial 'accounts.views.question_sidebar' %}
             {% if questions_comp %}
-            <ol class="list-group col col-md-7 w-100">
-                {% for question in questions_comp %}
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto d-flex flex-column gap-2">
-                            <div class="fw-bold">آیدی: {{ question.question.short_id }}</div>
-                            <div class="fw-bold">سوال: {{ question.question_title }}</div>
-                            <div>تاریخ: {{ question.date_created|naturalday }}</div>
-                            <div class="">تعداد: {{ question.question_count }}</div>
-                            <div class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</div>
-                        </div>
-                        {% if question.is_answered == True %}
-                            <span class="badge bg-success rounded-pill mx-1">جواب داده شده</span>
-                        {% else %}
-                            <span class="badge bg-warning rounded-pill mx-1">در انتظار بررسی</span>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ol>
-        {% else %}
-            <p class="alert alert-danger w-50 text-center align-self-center">سوالی یافت نشد.</p>
-        {% endif %}
+                <ol class="list-group col col-md-7 w-100">
+                    {% for question in questions_comp %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto d-flex flex-column gap-2">
+                                <div class="fw-bold">آیدی: {{ question.question.short_id }}</div>
+                                <div class="fw-bold">سوال: {{ question.question_title }}</div>
+                                <div>تاریخ: {{ question.date_created|naturalday }}</div>
+                                <div class="">تعداد: {{ question.question_count }}</div>
+                                <div class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</div>
+                                {% if question.is_answered == True %}
+                                    {% if question.answers %}
+                                        {% for answer in question.answers.all %}
+                                            {% if answer.image %}
+                                                <div class="fw-bold"><a
+                                                        href="{{ answer.image.url }}" download target="_blank"
+                                                        class="btn btn-primary">دانلود
+                                                    جواب </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endif %}
+                            </div>
+                            {% if question.is_answered == True %}
+                                <span class="badge bg-success rounded-pill mx-1">جواب داده شده</span>
+                            {% else %}
+                                <span class="badge bg-warning rounded-pill mx-1">در انتظار بررسی</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p class="alert alert-danger w-50 text-center align-self-center">سوالی یافت نشد.</p>
+            {% endif %}
         </div>
     </main>
 {% endblock main %}

@@ -1,0 +1,10 @@
+{
+  "platform": "django",
+  "app": "app_name",
+  "disks": [
+    {
+      "name": "data",
+      "mountTo": "media"
+    }
+  ]
+}
