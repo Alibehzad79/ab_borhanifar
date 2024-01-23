@@ -33,11 +33,13 @@ def header(request):
         user_question_count = 0
         questions = 0
     admin_path = "/admin/questions/questioncomplete/?is_answered__exact=0"
+    site_settings = SiteSetting.objects.last()
     context = {
         "orders_count": order_count,
         'user_question_count': user_question_count,
         "questions": questions,
         "admin_path": admin_path,
+        "setting": site_settings,
     }
     return render(request, template_name, context)
 
