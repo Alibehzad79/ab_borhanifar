@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>انتقال به درگاه پرداخت</title>
+    {% include "base/header_references.html" %}
 </head>
-<body>
+<body class="d-flex flex-column justify-content-center align-items-center">
 
 {% if url %}
-    <h5>در حال اتصال به درگاه پرداخت ...</h5>
+    <h5 class="mt-5">در حال اتصال به درگاه پرداخت ...</h5>
 {% else %}
-    <h5>خطا در ارتباط با درگاه</h5>
+    <h5 class="mt-5">خطا در ارتباط با درگاه</h5>
 {% endif %}
 
 {% if url %}
@@ -31,5 +32,7 @@
         }
     </script>
 {% endif %}
+
+{% include "base/footer_references.html" %}
 </body>
 </html>

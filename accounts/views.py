@@ -240,7 +240,6 @@ def go_to_gateway_view(request):
     for ques in questions:
         user_amount += int(ques.price)
     amount = user_amount * 10
-    print(amount)
     factory = bankfactories.BankFactory()
     try:
         bank = factory.auto_create()  # or factory.create(bank_models.BankType.BMI) or set identifier
@@ -293,7 +292,7 @@ def callback_gateway_view(request):
         return redirect("questions-complete")
     # پرداخت موفق نبوده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.
     messages.add_message(request,
-                         message="پرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت ",
+                         message="پرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت. ",
                          level=messages.ERROR)
     return redirect("home_page")
 

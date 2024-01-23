@@ -24,9 +24,20 @@
                 <div class="d-flex flex-column gap-5">
                     <ol class="list-group col col-md-8 w-100">
                         {% for question in questions %}
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <li class="list-group-item d-flex justify-content-between align-items-start gap-3">
                                 <div class="ms-2 me-auto d-flex flex-column gap-3">
-                                    <div class="fw-bold">سوال {{ question.short_id }}</div>
+                                    <div class="d-flex flex-column flex-md-row">
+
+                                        <div class="fw-bold">سوال: <a href="{{question.image.url}}" class="text-decoration-none" target="_blank">{{ question.short_id }}</a></div>
+                                        <div>
+
+                                            {% if question.is_pay == True %}
+                                            <span class="badge bg-success rounded-pill mx-1">پرداخت شده</span>
+                                        {% else %}
+                                            <span class="badge bg-warning rounded-pill mx-1">در انتظار پرداخت</span>
+                                        {% endif %}
+                                        </div>
+                                    </div>
                                     <div>
                                         تاریخ: {{ question.date_sent|naturalday }}
                                     </div>
@@ -38,11 +49,7 @@
                                            class="btn btn-danger">حذف</a>
                                     </div>
                                 </div>
-                                {% if question.is_pay == True %}
-                                    <span class="badge bg-success rounded-pill mx-1">پرداخت شده</span>
-                                {% else %}
-                                    <span class="badge bg-warning rounded-pill mx-1">در انتظار پرداخت</span>
-                                {% endif %}
+                                
                             </li>
                         {% endfor %}
                     </ol>

@@ -18,10 +18,19 @@
             {% if questions_comp %}
                 <ol class="list-group col col-md-7 w-100">
                     {% for question in questions_comp %}
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <li class="list-group-item d-flex justify-content-between flex-column align-items-start gap-1">
                             <div class="ms-2 me-auto d-flex flex-column gap-2">
-                                <div class="fw-bold">آیدی: {{ question.question.short_id }}</div>
-                                <div class="fw-bold">سوال: {{ question.question_title }}</div>
+                                <div class="fw-bold">آیدی: <a href="{{ question.question_file.url }}" class="text-decoration-none" target="_blank">{{ question.question.short_id }}</a></div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div class="fw-bold">سوال: {{ question.question_title }}</div>
+                                    <div>
+                                        {% if question.is_answered == True %}
+                                        <span class="badge bg-success rounded-pill">جواب داده شده</span>
+                                    {% else %}
+                                        <span class="badge bg-warning rounded-pill">در انتظار بررسی</span>
+                                    {% endif %}
+                                    </div>
+                                </div>
                                 <div>تاریخ: {{ question.date_created|naturalday }}</div>
                                 <div class="">تعداد: {{ question.question_count }}</div>
                                 <div class="fw-bold">قیمت: {{ question.price|intcomma:False }} تومان</div>
@@ -40,11 +49,7 @@
 
                                 {% endif %}
                             </div>
-                            {% if question.is_answered == True %}
-                                <span class="badge bg-success rounded-pill mx-1">جواب داده شده</span>
-                            {% else %}
-                                <span class="badge bg-warning rounded-pill mx-1">در انتظار بررسی</span>
-                            {% endif %}
+                            
                         </li>
                     {% endfor %}
                 </ol>
