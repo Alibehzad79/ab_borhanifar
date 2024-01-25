@@ -30,6 +30,7 @@
                             {% else %}
                                 <a href="{% url 'profile' %}" class="btn btn-primary">پروفایل کاربری</a>
                                 {% if request.user.is_superuser %}
+                                <a href="{{admin_panel}}" class="btn btn-primary">پنل ادمین</a>
                                     <a href="{{ admin_path }}"
                                        class="btn btn-outline-success d-felx position-relative justify-content-around align-items-center"><i
                                             class="ri-chat-1-line mx-1">

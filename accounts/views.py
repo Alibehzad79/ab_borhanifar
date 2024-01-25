@@ -13,7 +13,7 @@ from azbankgateways import bankfactories, models as bank_models, default_setting
 
 from questions.models import QuestionComplete, Question
 from site_settings.models import SiteSetting
-
+from ab_borhanifar_backend.settings import DEFAULT_FROM_EMAIL
 
 # Create your views here.
 
@@ -275,6 +275,7 @@ def callback_gateway_view(request):
 
     # در این قسمت باید از طریق داده هایی که در بانک رکورد وجود دارد، رکورد متناظر یا هر اقدام مقتضی دیگر را انجام دهیم
     if bank_record.is_success:
+        site_setting  = SiteSetting.objects.last()
         user = request.user
         questions = user.questions.filter(is_pay=False).all()
         for ques in questions:
@@ -288,6 +289,9 @@ def callback_gateway_view(request):
                 new_question_complete.save()
                 ques.is_pay = True
                 ques.save()
+                send_mail(subject="یک سوال جدید دارید.",
+                      message="برای جواب دادن به سوال، وارد پنل ادمین بشوید.",
+                      from_email=DEFAULT_FROM_EMAIL, recipient_list=[site_setting.email], fail_silently=False)
         messages.add_message(request, message="پرداخت موفقیت آمیز بود", level=messages.SUCCESS)
         return redirect("questions-complete")
     # پرداخت موفق نبوده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.
